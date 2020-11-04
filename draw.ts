@@ -6,11 +6,16 @@ export type Vector3D = [number, number, number];
 const pointSize = 5;
 const clickedPoints: Vector2D[] = [];
 
-canvas.addEventListener('click', (ev: MouseEvent) => {
+function translateVector2DFromMouseEvent(ev: MouseEvent): Vector2D {
     const rect = canvas.getBoundingClientRect();
     const x = (ev.clientX - rect.left) * canvas.width / canvas.clientWidth;
     const y = (ev.clientY - rect.top ) * canvas.height / canvas.clientHeight;
-    clickedPoints.push([x, y]);
+    return [x, y];
+}
+
+canvas.addEventListener('click', (ev: MouseEvent) => {
+    const coord = translateVector2DFromMouseEvent(ev);
+    clickedPoints.push(coord);
 });
 
 function weightedAverage(a: number, b: number, t: number) {
@@ -49,6 +54,20 @@ function drawPoints(points: Vector2D[], color: string) {
     }
 }
 
+function drawLine(from: Vector2D, to: Vector2D, color: string) {
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(from[0], from[1]);
+    ctx.lineTo(to[0], to[1]);
+    ctx.stroke();
+}
+
+function drawLinesBetweenPoints(points: Vector2D[], color: string) {
+    for (let i = 0; i < points.length - 1; i++) {
+        drawLine(points[i], points[i+1], color);
+    }
+}
+
 function draw(t: number) {
     let points = [...clickedPoints];
     
@@ -57,8 +76,9 @@ function draw(t: number) {
 
     while (points.length > 0) {
         const colorT = points.length / (clickedPoints.length - 1);
-        const colorVec = weightedAverageVector3D(startColorVec, endColorVec, colorT);
-        drawPoints(points, vector3DToColor(colorVec));
+        const color = vector3DToColor(weightedAverageVector3D(startColorVec, endColorVec, colorT));
+        drawPoints(points, color);
+        drawLinesBetweenPoints(points, color);
         points = bezierPoints(points, (t % 1000) / 1000);
     }
 }
