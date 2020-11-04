@@ -20,4 +20,4 @@ yarn start
 npm start
 ```
 
-#![screenshot001](./statics/screenshot-001.gif)
+![screenshot001](./statics/screenshot-001.gif)
