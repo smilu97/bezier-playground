@@ -3,7 +3,7 @@ import { canvas, ctx } from ".";
 export type Vector2D = [number, number];
 export type Vector3D = [number, number, number];
 
-const pointSize = 5;
+const pointSize = 2;
 const clickedPoints: Vector2D[] = [];
 
 function translateVector2DFromMouseEvent(ev: MouseEvent): Vector2D {
