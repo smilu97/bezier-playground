@@ -1,6 +1,6 @@
 # Bezier playground
 
-Playground for demonstrating how bezier lines look like.
+Playground for demonstrating how bezier lines look like. [Demo](http://bezier.yjin.kim)
 
 ### Run
 
